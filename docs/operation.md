@@ -49,7 +49,7 @@ Code | Name  | Description
 This means that to check for a successful completion, the Failure Criteria should be set to NE (Not Equal) to 0 means a Fail condition.  
  
 ### Logging
-The default logging implemented by the connector consists of a maximum cycle of five log files. The log files contain information about the Commvault Connector and any jobs run by the Commvault Connector. The log files (Agent.log - Agent.log.5) are located in the <installation root>\log directory. Information is appended into the log files and any error messages, return codes can be viewed in these log files.
+The default logging implemented by the connector consists of a maximum cycle of five log files. The log files contain information about the Commvault Connector and any jobs run by the Commvault Connector. The log files (Agent.log - Agent.log.5) are located in the ```<installation root>```\log directory. Information is appended into the log files and any error messages, return codes can be viewed in these log files.
 
 ```
 2017-03-14 16:07:08,923 [main] INFO  Logger - [CommVaultConnector] 20170314 16:07:08 : ----------------------------------------------------------------------------

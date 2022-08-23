@@ -29,7 +29,7 @@ Create the OpCon global properties associated with the drop-down lists used when
 
 **CV_BACKUP_TYPES** Create the global property and add the values contained in **Backup File Types List** using a comma to separate them. The doubles quotes surrounding the values must be retained. These values will then be visible in the drop-down list.
 
-##Backup File Types List
+## Backup File Types List
 ```
 "DIFFERENTIAL"
 "INCREMENTAL"
@@ -40,7 +40,7 @@ Create the OpCon global properties associated with the drop-down lists used when
 
 **CV_BACKUP_FILE_NAMES** Create the global property and add the values contained in **Backup File Names List** using a comma to separate them. The doubles quotes surrounding the values must be retained. These values will then be visible in the drop-down list.
 
-##Backup File Names List
+## Backup File Names List
 ```
 "file_system.xml"
 "script_incr.xml"
