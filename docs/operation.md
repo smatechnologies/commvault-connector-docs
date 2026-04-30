@@ -1,55 +1,68 @@
-# Operation
+---
+sidebar_label: 'Operation'
+title: 'CommVault Connector operation'
+description: 'How to define CommVault backup jobs in Enterprise Manager, set failure criteria, and monitor connector log files.'
+tags:
+  - Procedural
+  - Automation Engineer
+  - CommVault
+---
 
-## Defining Commvault Jobs using Enterprise Manager
+# CommVault Connector operation
 
-The Enterprise Manager includes a Job SubType definition for the Commvault Connector. The Job SubType can be accessed by selecting the Commvault Job SubType from the dropdown list when the Windows Job Type has been selected. 
+## What is it?
 
-Before defining jobs, the global properties **CV_BACKUP_TYPES** and **CV_BACKUP_FILE_NAMES** should be completed. The global properties holds the definitions that populate the drop-down lists when creating the job definitions.
+The CommVault Connector operation page describes how to define CommVault backup jobs in Enterprise Manager, configure job parameters passed to the connector, set failure criteria based on CommVault completion codes, and monitor the connector log files.
 
-- CV_BACKUP_TYPES       
-  - This contains a list of backup types that can be selected when defining jobs (see ‘Create Commvault special properties’ section).
-- CV_BACKUP_FILE_NAMES  
-  - This contains a list of templates that can be selected when defining jobs (see ‘Create Commvault special properties’ section).
+## Defining CommVault jobs in Enterprise Manager
 
-### Commvault Job definitions
-When defining a Commvault job, select a Job Type of Windows and then a Job SubType of Commvault. The Commvault Definition screen will then appear.
+Before defining jobs, complete the **CV_BACKUP_TYPES** and **CV_BACKUP_FILE_NAMES** global properties. These properties populate the lists used when creating job definitions. See [Installation](./installation.md) for setup instructions.
 
-The job definition details consist of a Windows Batch User and the Job Definition and Failure Criteria TABs. 
+The **CV_BACKUP_TYPES** property holds the list of backup types available when defining jobs. The **CV_BACKUP_FILE_NAMES** property holds the list of XML template file names available when defining jobs.
 
-The Job Definition TAB is used to define parameters that are passed to the Commvault Connector and replaced in the template xml before the job request is submitted to Commvault. 
-The XML template itself is not updated, only the template in memory. 
+To define a CommVault job in Enterprise Manager, complete the following steps:
 
-The Commvault definitions are used to define the arguments that are submitted to the job.
+1. Select a **Job Type** of **Windows**.
+2. Select a **Job SubType** of **Commvault**. The CommVault Definition screen appears.
+3. Enter the **Windows Batch User** for the job.
+4. Complete the fields on the **Job Definition** tab (see field descriptions below).
+5. Set the **Failure Criteria** on the **Failure Criteria** tab (see completion codes below).
 
-Field             | Description
-------------------|---------------
-User Id	          | Required field that contains the name of the Windows Batch user that the Commvault Connector will be execute on the Windows system.
-Connector Path	  | Required field that contains the installed location of the Commvault Connector. This should not be changed and the location should be defined in the CommvaultPath property. If more than one Connector is installed on the same system, then a new global property should be defined and the entry in this field updated.
-Client Name	      | Required field that contains the name of the computer on which the required commvault agent is installed. The value is inserted into the XML template associated with the request.
-Sub Client Name	  | Optional field that defines a logical container that identifies and manages production data to be protected. When not present, the default value in the XML template is used otherwise the value is inserted into the XML template associated with the request.
-Instance          | Optional field that contains the name of an instance that is associated with the job. When not present, the default value in the XML template is used otherwise the value is inserted into the XML template associated with the request.
-BackupsetName     | Required field that contains the name of a backup set that contains the logical grouping of the sub clients which are the containers of all data managed by the agent. The value is inserted into the XML template associated with the request.
-XML Template Name |	Required field that contains the name of the XML template to use for the request. The value is selected from the dropdown list (file_system.xml, script_incr.xml, script_synthetic_full.xml). More templates can be added to the selection by placing the template file in the templates directory and adding the filename of the template in the CV_BACKUP_FILE_NAMES property.
-Backup Type	      | Required field that contains the backup type to use. The value is selected from the dropdown list (DIFFERENTIAL, INCREMENTAL, FULL, PRE_SELECT or SYNTHETIC_FULL). The value is inserted into the XML template associated with the request.
+### Job definition fields
 
-### Failure Citeria
-The Failure Criteria TAB field definitions are used to define the successful completion of the job.
- 
-Completion Codes supported by the Commvault Connector.
+The **Job Definition** tab defines parameters that are passed to the CommVault Connector and substituted into the XML template before the job request is submitted to CommVault. The XML template file is not modified — only the in-memory copy is updated.
 
-Code | Name  | Description
------|-------|----------------- 
-0    | COMPLETED               | the job completed processing.
-1    | COMPLETED_WITH_WARNINGS | the job completed processing, but contains warnings.
-2    | COMPLETED_WITH_ERRORS   | the job completed processing, but contains errors.
-3    | FAILED                  | the job failed.
-4    | FAILED_TO_START         | the job did not start.
-18   | WEB_SERVER_ERROR        | an error occurred when communicating with the Commvault web server.
+| Field | Required | Description |
+|-------|----------|-------------|
+| User Id | Required | The Windows Batch user account under which the CommVault Connector runs on the Windows system. |
+| Connector Path | Required | The installed location of the CommVault Connector. Reference the **CommvaultPath** global property. If more than one connector is installed on the same system, define a separate global property for each and update this field accordingly. |
+| Client Name | Required | The name of the computer on which the required CommVault agent is installed. Inserted into the XML template. |
+| Sub Client Name | Optional | A logical container that identifies the production data to protect. When not provided, the default value in the XML template is used. When provided, inserted into the XML template. |
+| Instance | Optional | The name of a CommVault agent instance associated with the job. When not provided, the default value in the XML template is used. When provided, inserted into the XML template. |
+| BackupsetName | Required | The name of a backup set — the logical grouping of sub-clients managed by the agent. Inserted into the XML template. |
+| XML Template Name | Required | The XML template file that defines the structure of the CommVault backup request. Select from the list populated by the **CV_BACKUP_FILE_NAMES** property. Additional templates can be added by placing the file in the `templates` directory and adding the filename to **CV_BACKUP_FILE_NAMES**. |
+| Backup Type | Required | The type of backup to run. Select from the list populated by the **CV_BACKUP_TYPES** property. Valid values: `DIFFERENTIAL`, `INCREMENTAL`, `FULL`, `PRE_SELECT`, `SYNTHETIC_FULL`. Inserted into the XML template. |
 
-This means that to check for a successful completion, the Failure Criteria should be set to NE (Not Equal) to 0 means a Fail condition.  
- 
-### Logging
-The default logging implemented by the connector consists of a maximum cycle of five log files. The log files contain information about the Commvault Connector and any jobs run by the Commvault Connector. The log files (Agent.log - Agent.log.5) are located in the ```<installation root>```\log directory. Information is appended into the log files and any error messages, return codes can be viewed in these log files.
+## Failure criteria
+
+The **Failure Criteria** tab determines when the OpCon job is considered to have failed, based on the completion code returned by the CommVault Connector.
+
+To treat only a fully successful job as passing, set Failure Criteria to **Not Equal (NE)** to `0`.
+
+| Code | Name | Description |
+|------|------|-------------|
+| 0 | COMPLETED | The job completed processing. |
+| 1 | COMPLETED_WITH_WARNINGS | The job completed processing but contains warnings. |
+| 2 | COMPLETED_WITH_ERRORS | The job completed processing but contains errors. |
+| 3 | FAILED | The job failed. |
+| 4 | FAILED_TO_START | The job did not start. |
+| 18 | WEB_SERVER_ERROR | An error occurred when communicating with the CommVault web server. |
+
+## Logging
+
+The connector logs activity to a set of rotating log files in the `<installation root>\log` directory. The connector maintains a maximum of five log files (`Agent.log` through `Agent.log.5`). Log entries include job parameters, authentication results, job submission status, and error messages.
+
+**Example log output:**
 
 ```
 2017-03-14 16:07:08,923 [main] INFO  Logger - [CommVaultConnector] 20170314 16:07:08 : ----------------------------------------------------------------------------
@@ -97,3 +110,40 @@ The default logging implemented by the connector consists of a maximum cycle of 
 2017-03-14 16:21:57,985 [main] INFO  Logger - [CommVaultConnector] 20170314 16:21:57 : CommVault Job Completed with status 4 - (Failed to Start)
 2017-03-14 16:21:57,985 [main] INFO  Logger - [CommVaultConnector] 20170314 16:21:57 : ----------------------------------------------------------------------------
 ```
+
+## FAQs
+
+**What backup types does the connector support?**
+The connector supports `DIFFERENTIAL`, `INCREMENTAL`, `FULL`, `PRE_SELECT`, and `SYNTHETIC_FULL`. These values are populated from the **CV_BACKUP_TYPES** global property.
+
+**What completion code indicates a successful job?**
+A completion code of `0` (COMPLETED) indicates the job finished processing successfully.
+
+**How do I configure the OpCon job to fail when CommVault reports warnings?**
+Set the **Failure Criteria** to **Not Equal (NE)** to `0`. Any non-zero completion code — including code `1` (COMPLETED_WITH_WARNINGS) — will mark the OpCon job as failed.
+
+**Where are the connector log files located?**
+Log files are in the `<installation root>\log` directory. The connector maintains up to five files: `Agent.log` through `Agent.log.5`.
+
+**Can I add additional XML templates?**
+Yes. Place the template file in the `templates` directory under the connector installation root, then add the filename to the **CV_BACKUP_FILE_NAMES** global property.
+
+## Glossary
+
+**BackupSet**
+A logical grouping of sub-clients in CommVault that contains all data managed by a CommVault agent.
+
+**Sub-client**
+A logical container in CommVault that identifies and manages production data to be protected.
+
+**Instance**
+A named CommVault agent instance associated with a job definition.
+
+**XML Template Name**
+The CommVault XML template file selected when defining a job. Determines the structure of the backup request submitted to CommVault. The connector updates values in the template in memory — the file itself is not modified.
+
+**Failure Criteria**
+Job settings in OpCon that determine when a CommVault Connector job is considered failed, based on the completion code returned by CommVault.
+
+**Completion code**
+A numeric value returned by the CommVault Connector that indicates the outcome of a CommVault job. Used by the OpCon Failure Criteria to determine job success or failure.
