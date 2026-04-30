@@ -2,6 +2,7 @@
 slug: '/'
 sidebar_label: 'CommVault Connector'
 hide_table_of_contents: true
+displayed_sidebar: null
 ---
 
 # CommVault Connector
