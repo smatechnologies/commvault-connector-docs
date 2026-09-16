@@ -15,8 +15,6 @@ tags:
 
 The CommVault Connector is an OpCon connector for Windows that uses the CommVault REST API to submit backup jobs to CommVault and track their progress. It allows OpCon to schedule and monitor CommVault backup operations as part of an automated workflow.
 
-The CommVault software platform delivers a holistic approach to data and information management. Within the platform, tightly integrated software delivers functionality throughout physical and virtual environments to protect and recover data, manage costs and complexity, and provide insight into your information.
-
 The current connector is installed on a Windows environment. It communicates with the CommVault system using the CommVault REST API. Job definitions are passed to the connector as arguments on the command line.
 
 ![CommVault Component Overview](../static/img/commvault-component-overview.png)
