@@ -16,15 +16,43 @@ tags:
 
 The CommVault Connector is an OpCon connector for Windows that uses the CommVault REST API to submit backup jobs to CommVault and track their progress.
 
-## Overview
+<div style={{display: 'flex', gap: '0.75rem', alignItems: 'flex-start', flexWrap: 'wrap', marginTop: '1rem'}}>
 
-- [Overview](./overview.md) — what the connector does and how it processes a job
-- [Release notes](./release-notes.md) — version history and upgrade notes
+<div style={{flex: '1', minWidth: '160px', display: 'flex', flexDirection: 'column', gap: '0.6rem'}}>
 
-## Installation
+<div style={{background: 'var(--ifm-card-background-color)', border: '1px solid var(--ifm-color-emphasis-400)', borderRadius: '10px', padding: '0.75rem 1rem'}}>
 
-- [Installation](./installation.md) — install the connector, create the global properties, and configure `Connector.config`
+### Overview
 
-## Operation
+- [Overview](./overview.md)
+- [Release Notes](./release-notes.md)
 
-- [Operation](./operation.md) — job definition fields, completion codes, and log output
+</div>
+
+</div>
+
+<div style={{flex: '1', minWidth: '160px', display: 'flex', flexDirection: 'column', gap: '0.6rem'}}>
+
+<div style={{background: 'var(--ifm-card-background-color)', border: '1px solid var(--ifm-color-emphasis-400)', borderRadius: '10px', padding: '0.75rem 1rem'}}>
+
+### Installation
+
+- [Installation](./installation.md)
+
+</div>
+
+</div>
+
+<div style={{flex: '1', minWidth: '160px', display: 'flex', flexDirection: 'column', gap: '0.6rem'}}>
+
+<div style={{background: 'var(--ifm-card-background-color)', border: '1px solid var(--ifm-color-emphasis-400)', borderRadius: '10px', padding: '0.75rem 1rem'}}>
+
+### Operation
+
+- [Operation](./operation.md)
+
+</div>
+
+</div>
+
+</div>
